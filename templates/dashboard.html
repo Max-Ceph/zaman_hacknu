@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h2>Добро пожаловать, {{ username }}</h2>
+
+        <!-- Чат-окно -->
+        <div id="chat-box" class="chat-container">
+            <div><strong>Карл:</strong> Доброго времени суток! Меня зовут Карл Марксович. Я ваш персональный финансовый консультант. Моя задача - помочь вам в любых вопросах, касающихся нашей горячо любимой экономики.</div>
+        </div>
+
+        <div class="quick-options">
+            <button class="quick-btn">Разъяснение финансовых понятий</button>
+            <button class="quick-btn">Финансовые калькуляторы</button>
+            <button class="quick-btn">Советник по кредитам</button>
+            <button class="quick-btn">Финансовое планирование</button>
+            <button class="quick-btn">Сравнение продуктов банков</button>
+        </div>
+
+        <input type="text" id="user-message" placeholder="Введите сообщение..." />
+        <button id="send-button">Отправить</button>
+
+        <a href="/logout" class="logout-btn">Выйти</a>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $(".quick-btn").on("click", function() {
+                var message = $(this).text();
+                sendMessage(message);
+            });
+
+            $("#send-button").on("click", function() {
+                var message = $("#user-message").val();
+                if ($.trim(message) !== "") {
+                    sendMessage(message);
+                    $("#user-message").val("");
+                }
+            });
+
+            $("#user-message").on("keypress", function(e) {
+                if (e.which === 13) {
+                    $("#send-button").click();
+                }
+            });
+
+            function sendMessage(message) {
+                $("#chat-box").append("<div><strong>Вы:</strong> " + message + "</div>");
+                $.ajax({
+                    url: "/chat",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({ message: message }),
+                    success: function(data) {
+                        $("#chat-box").append("<div><strong>Карл:</strong> " + data.reply + "</div>");
+                        $("#chat-box").scrollTop($("#chat-box")[0].scrollHeight);
+                    },
+                    error: function() {
+                        $("#chat-box").append("<div><strong>Карл:</strong> Упс, произошла ошибка. Попробуйте позже.</div>");
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

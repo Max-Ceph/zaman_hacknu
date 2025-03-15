@@ -1,0 +1,151 @@
+/* Основные стили */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #FFFFFF;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    color: #000000;
+}
+
+/* Основной контейнер */
+.dashboard-container {
+    margin: 50px auto;
+    width: 50%;
+    padding: 20px;
+    background-color: #FFFFFF;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Заголовки */
+h1 {
+    color: #000000;
+    font-weight: bold;
+}
+
+/* Чат-окно */
+.chat-container {
+    height: 300px;
+    overflow-y: auto;
+    background-color: #F7F7F7;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 2px solid #000000;
+    color: #000000;
+    font-size: 16px;
+}
+
+/* Быстрые кнопки */
+.quick-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.quick-btn {
+    background-color: #000000;
+    color: white;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.quick-btn:hover {
+    background-color: #333333;
+    transform: scale(1.05);
+}
+
+/* Поле ввода */
+input {
+    width: 75%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 7px;
+    border: 2px solid #000000;
+    background-color: #FFFFFF;
+    font-size: 16px;
+    color: #000000;
+}
+
+input:focus {
+    outline: none;
+    border-color: #333333;
+}
+
+/* Основные кнопки */
+button {
+    background-color: #000000;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+button:hover {
+    background-color: #333333;
+    transform: scale(1.05);
+}
+
+/* Кнопка выхода */
+.logout-btn {
+    display: block;
+    margin-top: 20px;
+    color: #000000;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.logout-btn:hover {
+    text-decoration: underline;
+    color: #333333;
+}
+
+/* Оформление вопросов (как в твоём примере) */
+.faq-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 800px;
+    margin: 40px auto;
+    gap: 20px;
+}
+
+.faq-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    width: 45%;
+}
+
+.faq-number {
+    background-color: #000000;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.faq-text {
+    text-align: left;
+    font-size: 18px;
+}
+
+.faq-text strong {
+    font-weight: bold;
+}
