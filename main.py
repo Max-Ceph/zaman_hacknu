@@ -31,7 +31,7 @@ def get_openai_response(message: str) -> str:
                 {"role": "system", "content": "Ты — финансовый консультант. Отвечай понятно, кратко(максимум 100 токенов), если тебе отправляют запрос 'Калькуляторы', спрашивай что пользователь хочет рассчитать,если 'Финансовое планирование' ты спрашивай какого вида  ."},
                 {"role": "user", "content": message}
             ],
-            max_tokens=100,
+            max_tokens=300,
             temperature=0.6
         )
         return response.choices[0].message.content
