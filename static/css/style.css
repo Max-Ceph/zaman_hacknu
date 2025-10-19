@@ -1,151 +1,227 @@
-/* Основные стили */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #FFFFFF;
-    text-align: center;
+/* === Zaman Bank Login & Register Page === */
+:root {
+    --zaman-green: #2d9a86;
+    --zaman-solar: #eefe6d;
+    --zaman-white: #ffffff;
+    --zaman-dark: #1a1a1a;
+    --zaman-text: #2c3e50;
+}
+
+* {
     margin: 0;
     padding: 0;
-    color: #000000;
+    box-sizing: border-box;
 }
 
-/* Основной контейнер */
-.dashboard-container {
-    margin: 50px auto;
-    width: 50%;
-    padding: 20px;
-    background-color: #FFFFFF;
-    border-radius: 15px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Заголовки */
-h1 {
-    color: #000000;
-    font-weight: bold;
-}
-
-/* Чат-окно */
-.chat-container {
-    height: 300px;
-    overflow-y: auto;
-    background-color: #F7F7F7;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 10px;
-    border: 2px solid #000000;
-    color: #000000;
-    font-size: 16px;
-}
-
-/* Быстрые кнопки */
-.quick-options {
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(135deg, #2d9a86 0%, #25866f 100%);
+    min-height: 100vh;
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
-    margin-bottom: 15px;
+    align-items: center;
+    padding: 20px;
 }
 
-.quick-btn {
-    background-color: #000000;
-    color: white;
-    padding: 12px 18px;
-    border: none;
-    border-radius: 7px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.3s;
+/* === Контейнер формы === */
+.login-container {
+    background: var(--zaman-white);
+    width: 100%;
+    max-width: 450px;
+    padding: 3rem 2.5rem;
+    border-radius: 25px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideDown 0.5s ease;
+    position: relative;
+    overflow: hidden;
 }
 
-.quick-btn:hover {
-    background-color: #333333;
-    transform: scale(1.05);
+.login-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--zaman-green) 0%, var(--zaman-solar) 100%);
 }
 
-/* Поле ввода */
-input {
-    width: 75%;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 7px;
-    border: 2px solid #000000;
-    background-color: #FFFFFF;
-    font-size: 16px;
-    color: #000000;
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* === Заголовок === */
+h2 {
+    color: var(--zaman-green);
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+h2::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: var(--zaman-solar);
+    margin: 1rem auto;
+    border-radius: 2px;
+}
+
+/* === Сообщения об ошибках === */
+.error {
+    background: #fee;
+    color: #c33;
+    padding: 0.875rem 1.25rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    border-left: 4px solid #c33;
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+/* === Форма === */
+form {
+    margin-top: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    color: var(--zaman-text);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"] {
+    width: 100%;
+    padding: 0.875rem 1.25rem;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    font-size: 1rem;
+    color: var(--zaman-text);
+    transition: all 0.3s ease;
+    background: #f8f9fa;
 }
 
 input:focus {
     outline: none;
-    border-color: #333333;
+    border-color: var(--zaman-green);
+    background: var(--zaman-white);
+    box-shadow: 0 0 0 4px rgba(45, 154, 134, 0.1);
 }
 
-/* Основные кнопки */
-button {
-    background-color: #000000;
-    color: white;
-    padding: 12px 20px;
+input::placeholder {
+    color: #adb5bd;
+}
+
+/* === Кнопка === */
+button[type="submit"] {
+    width: 100%;
+    background: linear-gradient(135deg, var(--zaman-green) 0%, #25866f 100%);
+    color: var(--zaman-white);
+    padding: 1rem;
     border: none;
-    border-radius: 7px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
     cursor: pointer;
-    font-size: 16px;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-button:hover {
-    background-color: #333333;
-    transform: scale(1.05);
+button[type="submit"]:hover {
+    background: linear-gradient(135deg, #25866f 0%, var(--zaman-green) 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(45, 154, 134, 0.3);
 }
 
-/* Кнопка выхода */
-.logout-btn {
-    display: block;
-    margin-top: 20px;
-    color: #000000;
+button[type="submit"]:active {
+    transform: translateY(-1px);
+}
+
+/* === Ссылки === */
+p {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: #6c757d;
+    font-size: 0.95rem;
+}
+
+a {
+    color: var(--zaman-green);
     text-decoration: none;
-    font-weight: bold;
-    transition: all 0.3s;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: #25866f;
+    text-decoration: underline;
+}
+
+/* === Адаптивность === */
+@media (max-width: 576px) {
+    .login-container {
+        padding: 2rem 1.5rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"] {
+        padding: 0.75rem 1rem;
+    }
+    
+    button[type="submit"] {
+        padding: 0.875rem;
+        font-size: 1rem;
+    }
+}
+
+/* === Дополнительные элементы === */
+.logout-btn {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border: 2px solid var(--zaman-green);
+    color: var(--zaman-green);
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
 }
 
 .logout-btn:hover {
-    text-decoration: underline;
-    color: #333333;
-}
-
-/* Оформление вопросов (как в твоём примере) */
-.faq-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-width: 800px;
-    margin: 40px auto;
-    gap: 20px;
-}
-
-.faq-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
-    width: 45%;
-}
-
-.faq-number {
-    background-color: #000000;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-}
-
-.faq-text {
-    text-align: left;
-    font-size: 18px;
-}
-
-.faq-text strong {
-    font-weight: bold;
+    background: var(--zaman-green);
+    color: var(--zaman-white);
+    transform: translateY(-2px);
 }

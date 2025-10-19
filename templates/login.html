@@ -7,10 +7,14 @@
 <body>
     <div class="login-container">
         <h2>Login</h2>
+        {% if error %}
+            <p class="error" style="color: red;">{{ error }}</p>
+        {% endif %}
         <form action="/login" method="post">
             <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
+                <!-- УБЕДИТЕСЬ, ЧТО ЗДЕСЬ name="email" -->
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>

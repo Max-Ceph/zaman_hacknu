@@ -1,0 +1,462 @@
+/* === Zaman Bank Modern Design System === */
+:root {
+    --zaman-green: #2d9a86;
+    --zaman-solar: #eefe6d;
+    --zaman-white: #ffffff;
+    --zaman-dark: #1a1a1a;
+    --zaman-gray: #f8f9fa;
+    --zaman-text: #2c3e50;
+    --shadow-sm: 0 2px 8px rgba(45, 154, 134, 0.08);
+    --shadow-md: 0 4px 16px rgba(45, 154, 134, 0.12);
+    --shadow-lg: 0 8px 24px rgba(45, 154, 134, 0.16);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    color: var(--zaman-text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    min-height: 100vh;
+}
+
+/* === Навигация === */
+.navbar {
+    background: var(--zaman-white) !important;
+    box-shadow: var(--shadow-sm);
+    padding: 1rem 0;
+    border-bottom: 3px solid var(--zaman-solar);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--zaman-green);
+}
+
+.navbar-brand img {
+    height: 45px;
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand img:hover {
+    transform: scale(1.05);
+}
+
+.logout-btn {
+    background: transparent;
+    border: 2px solid var(--zaman-green);
+    color: var(--zaman-green);
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    background: var(--zaman-green);
+    color: var(--zaman-white);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* === Основной контент === */
+main {
+    padding: 2rem 1rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* === Карточки === */
+.card {
+    background: var(--zaman-white);
+    border: none;
+    border-radius: 20px;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--zaman-green) 0%, #25866f 100%);
+    color: var(--zaman-white);
+    padding: 1.25rem 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100%;
+    background: var(--zaman-solar);
+    opacity: 0.2;
+    transform: skewX(-20deg);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-footer {
+    background: var(--zaman-gray);
+    border-top: 2px solid var(--zaman-solar);
+    padding: 1.5rem;
+}
+
+/* === Счета === */
+.account-item {
+    background: linear-gradient(135deg, var(--zaman-gray) 0%, #e9ecef 100%);
+    padding: 1.25rem;
+    border-radius: 15px;
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--zaman-solar);
+    transition: all 0.3s ease;
+}
+
+.account-item:hover {
+    transform: translateX(5px);
+    box-shadow: var(--shadow-sm);
+}
+
+.account-item:last-child {
+    margin-bottom: 0;
+}
+
+.account-item h5 {
+    color: var(--zaman-text);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.account-balance {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--zaman-green);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.account-balance::before {
+    content: '💰';
+    font-size: 1.5rem;
+}
+
+/* === Цели === */
+#goals-container {
+    max-height: 350px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+#goals-container::-webkit-scrollbar {
+    width: 8px;
+}
+#goals-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+#goals-container::-webkit-scrollbar-thumb {
+    background: var(--zaman-green);
+    border-radius: 10px;
+}
+#goals-container::-webkit-scrollbar-thumb:hover {
+    background: #25866f;
+}
+
+.goal-item {
+    background: var(--zaman-white);
+    padding: 1.25rem;
+    border-radius: 15px;
+    margin-bottom: 1rem;
+    border: 2px solid var(--zaman-gray);
+    transition: all 0.3s ease;
+}
+
+.goal-item:hover {
+    border-color: var(--zaman-solar);
+    box-shadow: var(--shadow-sm);
+}
+
+.goal-item:last-child {
+    margin-bottom: 0;
+}
+
+.goal-item strong {
+    color: var(--zaman-green);
+    font-size: 1.1rem;
+}
+
+.progress {
+    height: 12px;
+    border-radius: 10px;
+    background: #e9ecef;
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, var(--zaman-green) 0%, var(--zaman-solar) 100%);
+    color: var(--zaman-dark);
+    font-weight: 700;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: width 0.6s ease;
+    box-shadow: 0 2px 4px rgba(45, 154, 134, 0.3);
+}
+
+/* === Форма добавления цели === */
+#add-goal-form input {
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+#add-goal-form input:focus {
+    border-color: var(--zaman-green);
+    box-shadow: 0 0 0 3px rgba(45, 154, 134, 0.1);
+    outline: none;
+}
+
+/* === Чат === */
+.card-body.p-0 {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column; /* Добавлено для правильного позиционирования */
+    overflow-y: auto;
+}
+
+.card-body.p-0::-webkit-scrollbar {
+    width: 8px;
+}
+.card-body.p-0::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+.card-body.p-0::-webkit-scrollbar-thumb {
+    background: var(--zaman-green);
+    border-radius: 10px;
+}
+.card-body.p-0::-webkit-scrollbar-thumb:hover {
+    background: #25866f;
+}
+
+#chat-box {
+    width: 100%;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.chat-message {
+    padding: 1rem 1.25rem;
+    border-radius: 20px;
+    max-width: 75%;
+    line-height: 1.5;
+    animation: slideIn 0.3s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.bot-message {
+    background: linear-gradient(135deg, var(--zaman-white) 0%, #f8f9fa 100%);
+    align-self: flex-start;
+    border: 2px solid var(--zaman-solar);
+    border-bottom-left-radius: 5px;
+}
+
+.bot-message strong {
+    color: var(--zaman-green);
+    font-weight: 700;
+}
+
+.user-message {
+    background: linear-gradient(135deg, var(--zaman-green) 0%, #25866f 100%);
+    color: var(--zaman-white);
+    align-self: flex-end;
+    border-bottom-right-radius: 5px;
+    font-weight: 500;
+}
+
+/* === Область ввода чата === */
+.chat-input-area {
+    background: var(--zaman-white);
+    border-top: 3px solid var(--zaman-solar);
+    padding: 1.25rem !important;
+}
+
+.input-group {
+    box-shadow: var(--shadow-sm);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+#user-message {
+    border: 2px solid var(--zaman-green);
+    padding: 0.875rem 1.25rem;
+    font-size: 1rem;
+    border-radius: 15px 0 0 15px;
+}
+
+#user-message:focus {
+    box-shadow: 0 0 0 3px rgba(45, 154, 134, 0.2);
+    outline: none;
+    border-color: var(--zaman-green);
+}
+
+#record-btn {
+    background: var(--zaman-solar);
+    color: var(--zaman-dark);
+    border: 2px solid var(--zaman-solar);
+    font-size: 1.3rem;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+}
+
+#record-btn:hover {
+    background: #e5f05d;
+    transform: scale(1.05);
+}
+
+#recording-indicator {
+    color: #dc3545;
+    font-weight: 600;
+    font-size: 0.9rem;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* === Кнопки === */
+.btn-zaman {
+    background: linear-gradient(135deg, var(--zaman-green) 0%, #25866f 100%);
+    color: var(--zaman-white);
+    font-weight: 600;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0 15px 15px 0;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.btn-zaman:hover {
+    background: linear-gradient(135deg, #25866f 0%, var(--zaman-green) 100%);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    color: var(--zaman-white);
+}
+
+.w-100 {
+    border-radius: 12px !important;
+}
+
+/* === Адаптивность === */
+@media (max-width: 992px) {
+    main {
+        padding: 1rem 0.5rem;
+    }
+
+    .card {
+        margin-bottom: 1.5rem;
+    }
+
+    .chat-message {
+        max-width: 85%;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-brand img {
+        height: 35px;
+    }
+    .card-header {
+        font-size: 1rem;
+        padding: 1rem;
+    }
+    .account-balance {
+        font-size: 1.4rem;
+    }
+    .chat-message {
+        max-width: 90%;
+        padding: 0.75rem 1rem;
+    }
+}
+
+.text-muted, .card-header .text-muted, .card-body .text-muted, .goal-item .text-muted, .chat-message .text-muted, small.text-muted {
+    background: linear-gradient(90deg, #fff 0%, #eefe6d 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    font-weight: 500;
+
+    /* Градиентная обводка */
+    text-shadow:
+        0 0 1px #2d9a86,
+        0 0 2px #2d9a86;
+}
+
+
+.gap-4 {
+    gap: 1.5rem !important;
+}
+/* === Исправление для контейнера целей === */
+#goals-container {
+    max-height: 350px; /* Вы можете подобрать высоту, которая вам нравится */
+    overflow-y: auto;  /* Добавляет вертикальный скроллбар, только если он нужен */
+    padding-right: 10px; /* Небольшой отступ, чтобы скроллбар не прилипал к тексту */
+}
+
+/* === Стилизация скроллбара для целей (чтобы было как в чате) === */
+#goals-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+#goals-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+#goals-container::-webkit-scrollbar-thumb {
+    background: var(--zaman-green);
+    border-radius: 10px;
+}
+
+#goals-container::-webkit-scrollbar-thumb:hover {
+    background: #25866f;
+}

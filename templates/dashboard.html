@@ -1,71 +1,885 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Zaman Bank AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dashboard_style.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="dashboard-container">
-        <h2>Добро пожаловать, {{ username }}</h2>
-
-        <!-- Чат-окно -->
-        <div id="chat-box" class="chat-container">
-            <div><strong>Карл:</strong> Доброго времени суток! Меня зовут Карл Марксович. Я ваш персональный финансовый консультант. Моя задача - помочь вам в любых вопросах, касающихся нашей горячо любимой экономики.</div>
-        </div>
-
-        <div class="quick-options">
-            <button class="quick-btn">Разъяснение финансовых понятий</button>
-            <button class="quick-btn">Финансовые калькуляторы</button>
-            <button class="quick-btn">Советник по кредитам</button>
-            <button class="quick-btn">Финансовое планирование</button>
-            <button class="quick-btn">Сравнение продуктов банков</button>
-        </div>
-
-        <input type="text" id="user-message" placeholder="Введите сообщение..." />
-        <button id="send-button">Отправить</button>
-
-        <a href="/logout" class="logout-btn">Выйти</a>
+<nav class="navbar">
+    <div class="container-fluid">
+    <a class="navbar-brand" href="https://www.zamanbank.kz" target="_blank" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+        <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Zaman Bank Logo" style="height: 40px; width: auto;">
+        <span style="font-weight: 600; font-size: 20px; color: #2d9a86;"></span>
+</a>
+        <a href="/logout" class="btn logout-btn">Выйти</a>
     </div>
+</nav>
 
+
+    <main class="container-fluid mt-4">
+        <div class="row g-4">
+            <!-- Левая колонка -->
+            <div class="col-lg-5 d-flex flex-column gap-4">
+                <!-- Счета -->
+                <div class="card">
+                    <div class="card-header">💼 Мои Счета</div>
+                    <div class="card-body" id="accounts-container">
+                        <div class="text-center py-3">
+                            <div class="spinner-border text-success" role="status"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- НОВОЕ: Аналитика расходов -->
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>📊 Аналитика расходов за месяц</span>
+                        <button class="btn btn-sm btn-success" id="generate-demo-btn" style="font-size: 12px;">
+                            🎲 Загрузить демо-данные
+                        </button>
+                    </div>
+                    <div class="card-body" id="analytics-container" style="min-height: 350px;">
+                        <div class="text-center py-5">
+                            <p class="text-muted">📊 Загрузите демо-данные для анализа</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- НОВОЕ: Визуализация мечты -->
+                <div class="card">
+                    <div class="card-header">
+                        ✨ Визуализация вашей мечты
+                        <small class="text-muted float-end" style="font-size: 12px;">
+                            💡 Нажмите на цель ниже, чтобы визуализировать её
+                        </small>
+                    </div>
+                    <div class="card-body" id="dream-visualization">
+                        <div class="text-center py-3">
+                            <p class="text-muted">Создайте цель, чтобы увидеть визуализацию</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Цели -->
+                <div class="card">
+                    <div class="card-header">
+                        🎯 Мои Финансовые Цели
+                        <small class="text-muted float-end" style="font-size: 11px;">
+                            👆 Нажмите на цель для визуализации
+                        </small>
+                    </div>
+                    <div class="card-body" id="goals-container">
+                        <div class="text-center py-3">
+                            <div class="spinner-border text-success" role="status"></div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <form id="add-goal-form">
+                            <div class="mb-2">
+                                <select id="goal-type" class="form-select mb-2">
+                                    <option value="house">🏠 Квартира</option>
+                                    <option value="car">🚗 Автомобиль</option>
+                                    <option value="travel">✈️ Путешествие</option>
+                                    <option value="education">🎓 Образование</option>
+                                    <option value="business">💼 Бизнес</option>
+                                    <option value="other">🎁 Другое</option>
+                                </select>
+                            </div>
+                            <div class="mb-2">
+                                <input type="text" id="goal-name" class="form-control" placeholder="Название цели" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="number" id="target-amount" class="form-control" placeholder="Сумма, KZT" required min="1">
+                            </div>
+                            <button type="submit" class="btn btn-zaman w-100">➕ Добавить Цель</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Правая колонка: Чат -->
+            <div class="col-lg-7">
+                <div class="card chat-card">
+                    <div class="card-header">💬 Ваш AI Ассистент - Амир</div>
+                    <div class="card-body p-0">
+                        <div id="chat-box">
+                            <div class="chat-message bot-message">
+                                <strong>Амир:</strong> Ассаламағалейкұм, {{ username }}! Чем могу помочь сегодня?
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer chat-input-area">
+                        <div class="position-relative">
+                            <div id="recording-indicator" style="display: none;">● Запись...</div>
+                            <div class="input-group">
+                                <input type="text" id="user-message" class="form-control" placeholder="Введите ваш вопрос..." autocomplete="off">
+                                <button class="btn" id="record-btn" title="Голосовой ввод">🎙️</button>
+                                <button class="btn btn-zaman" id="send-button">Отправить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function() {
-            $(".quick-btn").on("click", function() {
-                var message = $(this).text();
-                sendMessage(message);
+            loadAccounts();
+            loadGoals();
+            loadAnalytics();
+
+            // === ЗАГРУЗКА ДАННЫХ ===
+            function loadAccounts() {
+                $.ajax({
+                    url: "/api/accounts",
+                    type: "GET",
+                    success: function(accounts) {
+                        const container = $("#accounts-container");
+                        container.empty();
+                        if (accounts.length === 0) {
+                            container.html('<p class="text-center text-muted">У вас пока нет счетов.</p>');
+                        } else {
+                            accounts.forEach(function(acc) {
+                                const balance = parseFloat(acc.balance.$numberDecimal);
+                                const accountHtml = `
+                                    <div class="account-item">
+                                        <h5>${acc.accountName}</h5>
+                                        <div class="account-balance">${balance.toLocaleString('ru-RU')} ${acc.currency}</div>
+                                    </div>`;
+                                container.append(accountHtml);
+                            });
+                        }
+                    }
+                });
+            }
+
+            let selectedGoalId = null; // Храним ID выбранной цели
+
+            function loadGoals() {
+                $.ajax({
+                    url: "/api/goals",
+                    type: "GET",
+                    success: function(goals) {
+                        const container = $("#goals-container");
+                        container.empty();
+                        if (goals.length === 0) {
+                            container.html('<p class="text-center text-muted">У вас нет целей. Добавьте первую!</p>');
+                            $("#dream-visualization").html('<p class="text-center text-muted">Создайте цель, чтобы увидеть визуализацию</p>');
+                        } else {
+                            goals.forEach(function(goal, index) {
+                                const current = parseFloat(goal.currentAmount.$numberDecimal);
+                                const target = parseFloat(goal.targetAmount.$numberDecimal);
+                                const percentage = target > 0 ? (current / target) * 100 : 0;
+                                const goalId = goal._id.$oid;
+
+                                // Определяем, выбрана ли эта цель
+                                const isSelected = selectedGoalId === goalId || (selectedGoalId === null && index === 0);
+                                const selectedClass = isSelected ? 'goal-selected' : '';
+
+                                const goalHtml = `
+                                    <div class="goal-item ${selectedClass}" data-goal-id="${goalId}" style="cursor: pointer; transition: all 0.3s ease;">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span><strong>${goal.goalName}</strong></span>
+                                            <span class="text-muted">${percentage.toFixed(0)}%</span>
+                                        </div>
+                                        <div class="progress mb-2">
+                                            <div class="progress-bar" style="width: ${Math.min(percentage, 100)}%"></div>
+                                        </div>
+                                        <small class="text-muted">${current.toLocaleString('ru-RU')} / ${target.toLocaleString('ru-RU')} KZT</small>
+                                    </div>`;
+                                container.append(goalHtml);
+                            });
+
+                            // Добавляем обработчик клика на цели
+                            $('.goal-item').on('click', function() {
+                                const clickedGoalId = $(this).data('goal-id');
+                                selectedGoalId = clickedGoalId;
+
+                                // Убираем выделение со всех целей
+                                $('.goal-item').removeClass('goal-selected');
+                                // Добавляем выделение на выбранную
+                                $(this).addClass('goal-selected');
+
+                                // Находим выбранную цель
+                                const selectedGoal = goals.find(g => g._id.$oid === clickedGoalId);
+                                if (selectedGoal) {
+                                    visualizeDream(selectedGoal);
+                                }
+                            });
+
+                            // Визуализируем первую цель по умолчанию или ранее выбранную
+                            const goalToVisualize = selectedGoalId
+                                ? goals.find(g => g._id.$oid === selectedGoalId)
+                                : goals[0];
+
+                            if (goalToVisualize) {
+                                visualizeDream(goalToVisualize);
+                                if (!selectedGoalId) {
+                                    selectedGoalId = goalToVisualize._id.$oid;
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // === НОВАЯ ФУНКЦИЯ: Визуализация мечты ===
+            function visualizeDream(goal) {
+                if (!goal) return;
+
+                // Добавляем анимацию fade-out
+                $("#dream-visualization").fadeOut(200, function() {
+                    const current = parseFloat(goal.currentAmount.$numberDecimal);
+                    const target = parseFloat(goal.targetAmount.$numberDecimal);
+                    const percentage = (current / target) * 100;
+                    const remaining = target - current;
+
+                    // Определяем иконку и описание по типу цели
+                    const dreamImages = {
+                        'house': {emoji: '🏠', desc: 'Собственное жилье', color: '#4CAF50'},
+                        'car': {emoji: '🚗', desc: 'Автомобиль мечты', color: '#2196F3'},
+                        'travel': {emoji: '✈️', desc: 'Путешествие', color: '#FF9800'},
+                        'education': {emoji: '🎓', desc: 'Образование', color: '#9C27B0'},
+                        'business': {emoji: '💼', desc: 'Свой бизнес', color: '#F44336'},
+                        'other': {emoji: '🎁', desc: 'Мечта', color: '#00BCD4'}
+                    };
+
+                    const dreamType = goal.goalType || 'other';
+                    const dream = dreamImages[dreamType] || dreamImages['other'];
+
+                    // Рассчитываем срок при текущих накоплениях (примерно)
+                    const monthlyContribution = 50000; // Предполагаемое ежемесячное пополнение
+                    const monthsToGoal = Math.ceil(remaining / monthlyContribution);
+
+                    const visualizationHtml = `
+                        <div class="text-center">
+                            <div style="font-size: 80px; margin-bottom: 20px; animation: bounce 2s infinite;">${dream.emoji}</div>
+                            <h4 style="color: ${dream.color};">${goal.goalName}</h4>
+                            <p class="text-muted">${dream.desc}</p>
+
+                            <div class="mt-4">
+                                <div class="row text-center">
+                                    <div class="col-4">
+                                        <div class="p-3 bg-light rounded">
+                                            <h5 style="color: ${dream.color};">${percentage.toFixed(0)}%</h5>
+                                            <small class="text-muted">Готово</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="p-3 bg-light rounded">
+                                            <h5 style="color: ${dream.color};">${remaining.toLocaleString('ru-RU')}₸</h5>
+                                            <small class="text-muted">Осталось</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="p-3 bg-light rounded">
+                                            <h5 style="color: ${dream.color};">~${monthsToGoal} мес</h5>
+                                            <small class="text-muted">До цели</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <div class="timeline">
+                                    <div class="timeline-item ${percentage >= 25 ? 'completed' : ''}">
+                                        <div class="timeline-dot"></div>
+                                        <div class="timeline-label">Старт</div>
+                                    </div>
+                                    <div class="timeline-line ${percentage >= 25 ? 'completed' : ''}"></div>
+                                    <div class="timeline-item ${percentage >= 50 ? 'completed' : ''}">
+                                        <div class="timeline-dot"></div>
+                                        <div class="timeline-label">25%</div>
+                                    </div>
+                                    <div class="timeline-line ${percentage >= 50 ? 'completed' : ''}"></div>
+                                    <div class="timeline-item ${percentage >= 75 ? 'completed' : ''}">
+                                        <div class="timeline-dot"></div>
+                                        <div class="timeline-label">50%</div>
+                                    </div>
+                                    <div class="timeline-line ${percentage >= 75 ? 'completed' : ''}"></div>
+                                    <div class="timeline-item ${percentage >= 100 ? 'completed' : ''}">
+                                        <div class="timeline-dot"></div>
+                                        <div class="timeline-label">Цель!</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    $(this).html(visualizationHtml).fadeIn(400);
+                });
+            }
+
+            // === НОВАЯ ФУНКЦИЯ: Аналитика расходов ===
+            function loadAnalytics() {
+                console.log('📊 Начинаем загрузку аналитики...');
+
+                $.ajax({
+                    url: "/api/analytics",
+                    type: "GET",
+                    success: function(data) {
+                        console.log("✅ Аналитика успешно загружена:", data);
+
+                        if (data && data.analysis) {
+                            displayAnalytics(data);
+                        } else {
+                            console.error("⚠️ Получены некорректные данные:", data);
+                            $("#analytics-container").html(`
+                                <div class="alert alert-warning">
+                                    <strong>Получены некорректные данные</strong><br>
+                                    Попробуйте загрузить демо-данные снова
+                                </div>
+                            `);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("❌ Ошибка загрузки аналитики");
+                        console.error("Статус:", xhr.status);
+                        console.error("Текст ошибки:", error);
+                        console.error("Ответ сервера:", xhr.responseText);
+
+                        if (xhr.status === 400) {
+                            $("#analytics-container").html(`
+                                <div class="text-center py-3">
+                                    <p class="text-muted">📊 Нет данных для анализа</p>
+                                    <p class="text-muted" style="font-size: 13px;">Загрузите демо-данные для просмотра аналитики</p>
+                                </div>
+                            `);
+                        } else {
+                            $("#analytics-container").html(`
+                                <div class="alert alert-warning">
+                                    <strong>Недостаточно данных для аналитики</strong><br>
+                                    Нажмите кнопку "🎲 Загрузить демо-данные" выше
+                                </div>
+                            `);
+                        }
+                    }
+                });
+            }
+
+            function displayAnalytics(data) {
+                const categories = data.analysis.categories;
+                const recommendations = data.recommendations;
+
+                // Проверяем, есть ли данные
+                if (!categories || Object.keys(categories).length === 0) {
+                    $("#analytics-container").html(`
+                        <div class="alert alert-warning">
+                            <strong>Нет данных о расходах</strong><br>
+                            Нажмите "🎲 Загрузить демо-данные" для просмотра аналитики
+                        </div>
+                    `);
+                    return;
+                }
+
+                let html = `
+                    <div class="mb-3">
+                        <h6>Общие расходы: <strong style="color: #00c853;">${data.analysis.total_expenses.toLocaleString('ru-RU')}₸</strong></h6>
+                    </div>
+                    <div style="position: relative; height: 250px; margin-bottom: 20px;">
+                        <canvas id="expenseChart"></canvas>
+                    </div>
+                `;
+
+                if (recommendations) {
+                    html += `
+                        <div class="alert alert-info mt-3" style="font-size: 14px; line-height: 1.6;">
+                            ${recommendations.replace(/\n\n/g, '<br><br>')}
+                        </div>
+                    `;
+                }
+
+                $("#analytics-container").html(html);
+
+                // Уничтожаем старый график если есть
+                if (window.expenseChartInstance) {
+                    window.expenseChartInstance.destroy();
+                }
+
+                // Создаём новый график
+                const ctx = document.getElementById('expenseChart').getContext('2d');
+                window.expenseChartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(categories),
+                        datasets: [{
+                            data: Object.values(categories),
+                            backgroundColor: [
+                                '#4CAF50', '#2196F3', '#FF9800', '#9C27B0',
+                                '#F44336', '#00BCD4', '#FFC107', '#795548'
+                            ],
+                            borderWidth: 2,
+                            borderColor: '#fff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    padding: 15,
+                                    font: {
+                                        size: 12
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.parsed || 0;
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const percentage = ((value / total) * 100).toFixed(1);
+                                        return `${label}: ${value.toLocaleString('ru-RU')}₸ (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // === ГЕНЕРАЦИЯ ДЕМО-ДАННЫХ ===
+            $("#generate-demo-btn").on("click", function() {
+                const btn = $(this);
+                btn.prop('disabled', true).html('⏳ Загрузка...');
+
+                $.ajax({
+                    url: "/api/generate-demo-data",
+                    type: "POST",
+                    success: function(response) {
+                        console.log('✅ Демо-данные загружены:', response);
+                        showNotification('✅ Демо-данные загружены!', 'success');
+
+                        // ВАЖНО: Задержка перед загрузкой аналитики
+                        setTimeout(function() {
+                            console.log('🔄 Загружаем аналитику...');
+                            loadAnalytics();
+                        }, 800);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('❌ Ошибка загрузки демо-данных:', error);
+                        console.error('Статус:', xhr.status);
+                        console.error('Ответ:', xhr.responseText);
+                        showNotification('❌ Ошибка загрузки: ' + (xhr.responseJSON?.error || error), 'danger');
+                    },
+                    complete: function() {
+                        btn.prop('disabled', false).html('🎲 Загрузить демо-данные');
+                    }
+                });
             });
 
+            // === ДОБАВЛЕНИЕ ЦЕЛИ (обновлено с типом) ===
+            $("#add-goal-form").on("submit", function(e) {
+                e.preventDefault();
+                const goalType = $("#goal-type").val();
+                const goalName = $("#goal-name").val().trim();
+                const targetAmount = $("#target-amount").val();
+
+                if (!goalName || !targetAmount) {
+                    alert("Пожалуйста, заполните все поля!");
+                    return;
+                }
+
+                const submitBtn = $(this).find('button[type="submit"]');
+                submitBtn.prop('disabled', true).html('⏳ Добавление...');
+
+                $.ajax({
+                    url: "/api/goals",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        goalType: goalType,
+                        goalName: goalName,
+                        targetAmount: parseFloat(targetAmount)
+                    }),
+                    success: function() {
+                        $("#goal-name").val('');
+                        $("#target-amount").val('');
+                        loadGoals();
+                        showNotification('Цель успешно добавлена!', 'success');
+                    },
+                    error: function(xhr) {
+                        const errorMsg = xhr.responseJSON?.error || "Неизвестная ошибка";
+                        showNotification('Ошибка: ' + errorMsg, 'danger');
+                    },
+                    complete: function() {
+                        submitBtn.prop('disabled', false).html('➕ Добавить Цель');
+                    }
+                });
+            });
+
+            // === УВЕДОМЛЕНИЯ ===
+            function showNotification(message, type = 'success') {
+                const notification = $(`
+                    <div class="alert alert-${type} alert-dismissible fade show position-fixed"
+                         style="top: 20px; right: 20px; z-index: 9999; min-width: 300px;"
+                         role="alert">
+                        ${message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                `);
+                $('body').append(notification);
+                setTimeout(() => notification.alert('close'), 3000);
+            }
+
+            // === ЧАТ ===
             $("#send-button").on("click", function() {
-                var message = $("#user-message").val();
-                if ($.trim(message) !== "") {
+                const message = $("#user-message").val().trim();
+                if (message !== "") {
                     sendMessage(message);
-                    $("#user-message").val("");
                 }
             });
 
             $("#user-message").on("keypress", function(e) {
                 if (e.which === 13) {
+                    e.preventDefault();
                     $("#send-button").click();
                 }
             });
 
             function sendMessage(message) {
-                $("#chat-box").append("<div><strong>Вы:</strong> " + message + "</div>");
+                const chatBox = $("#chat-box");
+                const userHtml = `<div class="chat-message user-message">${escapeHtml(message)}</div>`;
+                chatBox.append(userHtml);
+                $("#user-message").val("");
+                chatBox.scrollTop(chatBox[0].scrollHeight);
+
+                const typingIndicator = $('<div class="chat-message bot-message" id="typing"><strong>Амир:</strong> <em>печатает...</em></div>');
+                chatBox.append(typingIndicator);
+                chatBox.scrollTop(chatBox[0].scrollHeight);
+
                 $.ajax({
                     url: "/chat",
                     type: "POST",
                     contentType: "application/json",
                     data: JSON.stringify({ message: message }),
                     success: function(data) {
-                        $("#chat-box").append("<div><strong>Карл:</strong> " + data.reply + "</div>");
-                        $("#chat-box").scrollTop($("#chat-box")[0].scrollHeight);
+                        $("#typing").remove();
+
+                        let botReply = escapeHtml(data.reply);
+
+                        // Добавляем ссылку если нужно открыть сайт банка
+                        if (data.open_bank_site === true && data.bank_url) {
+                            console.log("✅ Добавляю ссылку на банк в сообщение");
+                            botReply += ` <a href="${data.bank_url}" target="_blank" style="color: #00c853; font-weight: 600; text-decoration: underline;">→ Перейти на сайт Zaman Bank</a>`;
+                        }
+
+                        const botHtml = `<div class="chat-message bot-message"><strong>Амир:</strong> ${botReply}</div>`;
+                        chatBox.append(botHtml);
+                        chatBox.scrollTop(chatBox[0].scrollHeight);
+
+                        // Пробуем открыть popup
+                        if (data.open_bank_site === true && data.bank_url) {
+                            setTimeout(() => {
+                                const newWindow = window.open(data.bank_url, '_blank');
+                                if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+                                    showNotification('ℹ️ Нажмите на ссылку в сообщении, чтобы открыть сайт банка', 'info');
+                                }
+                            }, 1000);
+                        }
                     },
                     error: function() {
-                        $("#chat-box").append("<div><strong>Карл:</strong> Упс, произошла ошибка. Попробуйте позже.</div>");
+                        $("#typing").remove();
+                        const errorHtml = `<div class="chat-message bot-message"><strong>Амир:</strong> <em style="color: #dc3545;">Извините, произошла ошибка. Попробуйте еще раз.</em></div>`;
+                        chatBox.append(errorHtml);
+                        chatBox.scrollTop(chatBox[0].scrollHeight);
                     }
                 });
             }
+
+            function escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            // === ГОЛОСОВОЙ ВВОД ===
+            const recordBtn = $("#record-btn");
+            const recordingIndicator = $("#recording-indicator");
+            let isRecording = false;
+            let mediaRecorder;
+            let audioChunks = [];
+
+            recordBtn.on('click', async function() {
+                if (!isRecording) {
+                    try {
+                        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                        mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+                        mediaRecorder.ondataavailable = event => audioChunks.push(event.data);
+                        mediaRecorder.onstop = sendAudioToServer;
+                        mediaRecorder.start();
+                        isRecording = true;
+                        recordBtn.html('⏹️').css('background', '#dc3545');
+                        recordingIndicator.show();
+                    } catch (error) {
+                        showNotification("Доступ к микрофону не разрешен", "warning");
+                    }
+                } else {
+                    mediaRecorder.stop();
+                    isRecording = false;
+                    recordBtn.html('🎙️').css('background', '');
+                    recordingIndicator.text('● Обработка...').show();
+                }
+            });
+
+            function sendAudioToServer() {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                audioChunks = [];
+                const formData = new FormData();
+                formData.append('audio', audioBlob, 'recording.webm');
+
+                fetch('/transcribe', { method: 'POST', body: formData })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.transcribed_text) {
+                            $("#user-message").val(data.transcribed_text);
+                            sendMessage(data.transcribed_text);
+                        } else if (data.error) {
+                            showNotification("Ошибка распознавания: " + data.error, "danger");
+                        }
+                    })
+                    .catch(error => {
+                        showNotification("Не удалось распознать речь", "danger");
+                    })
+                    .finally(() => recordingIndicator.hide());
+            }
         });
     </script>
+
+    <style>
+        /* НОВОЕ: Адаптивный чат на всю высоту */
+        .chat-card {
+            height: calc(100vh - 120px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-card .card-body {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #chat-box {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8f9fa;
+            scroll-behavior: smooth;
+        }
+
+        /* Кастомный скроллбар для чата */
+        #chat-box::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #chat-box::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        #chat-box::-webkit-scrollbar-thumb {
+            background: #00c853;
+            border-radius: 10px;
+        }
+
+        #chat-box::-webkit-scrollbar-thumb:hover {
+            background: #00a844;
+        }
+
+        .chat-input-area {
+            background: white;
+            border-top: 1px solid #dee2e6;
+            padding: 15px;
+        }
+
+        /* Улучшенные стили для сообщений */
+        .chat-message {
+            margin-bottom: 15px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            max-width: 85%;
+            word-wrap: break-word;
+            animation: messageSlideIn 0.3s ease;
+        }
+
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, #2d9a86 0%, #5eccb8 100%);
+            color: white;
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .bot-message {
+            background: white;
+            border: 1px solid #e0e0e0;
+            color: #333;
+        }
+
+        .bot-message strong {
+            color: #2d9a86;
+        }
+
+        /* Стили для timeline визуализации */
+        .timeline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 0;
+            margin-top: 20px;
+        }
+
+        .timeline-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .timeline-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ddd;
+            border: 3px solid #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item.completed .timeline-dot {
+            background: #00c853;
+            box-shadow: 0 0 20px rgba(0,200,83,0.5);
+        }
+
+        .timeline-line {
+            flex: 1;
+            height: 3px;
+            background: #ddd;
+            margin: 0 -5px;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-line.completed {
+            background: linear-gradient(90deg, #2d9a86, #00e676);
+        }
+
+        .timeline-label {
+            margin-top: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .timeline-item.completed .timeline-label {
+            color: #2d9a86;
+        }
+
+        /* НОВЫЕ СТИЛИ: Выделение выбранной цели */
+        .goal-item {
+            position: relative;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            border: 2px solid transparent;
+        }
+
+        .goal-item:hover {
+            background: #e9ecef;
+            border-color: #2d9a86;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 200, 83, 0.15);
+        }
+
+        .goal-item.goal-selected {
+            background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f4 100%);
+            border: 2px solid #2d9a86;
+            box-shadow: 0 4px 16px rgba(0, 200, 83, 0.25);
+        }
+
+        .goal-item.goal-selected::before {
+            content: "✓";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 28px;
+            height: 28px;
+            background: #2d9a86;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 2px 8px rgba(0, 200, 83, 0.4);
+        }
+
+        .goal-item.goal-selected .progress-bar {
+            background: linear-gradient(90deg, #2d9a86, #00e676);
+        }
+
+        /* Анимация для иконки мечты */
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Плавное появление визуализации */
+        #dream-visualization {
+            transition: opacity 0.4s ease;
+        }
+
+        /* АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
+        @media (max-width: 991px) {
+            .chat-card {
+                height: 600px;
+                margin-top: 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .chat-card {
+                height: 500px;
+            }
+
+            #chat-box {
+                padding: 15px;
+            }
+
+            .chat-message {
+                max-width: 90%;
+                padding: 10px 14px;
+                font-size: 14px;
+            }
+        }
+    </style>
 </body>
 </html>
